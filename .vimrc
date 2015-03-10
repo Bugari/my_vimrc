@@ -25,7 +25,8 @@ let mapleader = ","
 let g:mapleader = ","
 
 " Fast saving
-nmap <leader>w :w!<cr>
+nmap <leader>w :update<cr>
+nmap <leader>W :w!<cr>
 
 " Persistent undo
 set undofile                " Save undo's after file closes
@@ -99,13 +100,17 @@ set tm=500
 " Enable syntax highlighting
 syntax enable
 
+"let g:lucius_contrast='medium'
+"let g:lucius_contrast_bg='high'
+"colorscheme lucius
+
 set background=dark
 "let g:solarized_termcolors=256
-"colorscheme hybrid
+colorscheme hybrid
 "colorscheme solarized
 "colorscheme vividchalk
 "colorscheme distinguished
-colorscheme jellybeans
+"colorscheme jellybeans
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -167,6 +172,7 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
 map k gk
@@ -498,12 +504,13 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'marijnh/tern_for_vim'
 Plug 'wavded/vim-stylus'
 Plug 'scrooloose/syntastic'
-Plug 'fholgado/minibufexpl.vim'
+"Plug 'fholgado/minibufexpl.vim'
 Plug 'Valloric/MatchTagAlways'
 "Plug 'Shougo/neocomplcache.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-surround'
 Plug 'kien/ctrlp.vim'
+Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
 Plug 'briancollins/vim-jst'
@@ -527,6 +534,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'nanotech/jellybeans.vim'
 Plug 'tpope/vim-vividchalk'
 Plug 'xolox/vim-notes'
+Plug 'jonathanfilip/vim-lucius'
 
 " scala
 Plug 'derekwyatt/vim-scala'
@@ -550,7 +558,33 @@ call plug#end()
 
 filetype plugin indent on     " required!
 
+"""Ctrl-p
+
+nmap  :CtrlP<cr>
+let g:ctrlp_cmd = 'CtrlPBuffer'
+let g:ctrlp_extensions = ['line', 'mixed']
+
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_max_files = 0
+
+""" mini buf explorer
+"map <F3> :MBEbb<CR>
+"map <F4> :MBEbf<CR>
+"
+""" Vim plug
 let g:plug_threads=4
+
+""" Vim notes
+let g:notes_suffix = '.note' 
+
+""" Indent guides 
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+
+let g:indent_guides_exclude_filetypes = ['help', 'note'] 
+" 'nerdtree' is a good option
+
+let g:indent_guides_color_change_percent = 6
 
 """ Tagbar config and friends
 nmap <F8> :TagbarToggle<CR>
@@ -639,8 +673,6 @@ let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
 
 let g:gitgutter_max_signs=1200
 
@@ -663,14 +695,19 @@ set showcmd
 
 let g:airline_powerline_fonts = 1
 
-map <F3> :MBEbb<CR>
-map <F4> :MBEbf<CR> 
 
 " show tabline only when there's at least one tab
 " 0 = never
 " 1 = at least one
 " 2 = always
 set showtabline=1
+
+
+" Experimental
+autocmd FocusLost * :set norelativenumber
+autocmd FocusGained * :set relativenumber
+autocmd InsertEnter * :set norelativenumber
+autocmd InsertLeave * :set relativenumber
 
 """""""""
 " notes "
@@ -683,7 +720,8 @@ set showtabline=1
 " `git clone https://github.com/mozilla/doctorjs.git`
 " and inside: `git submodule update --init --recursive`
 " and then `make install`
-" 
+"
 " YouCompleteMe requires `install.sh --clang-completer` in plugin folder
 "
 " tern-for-vim requires `npm install` in plugin folder
+
