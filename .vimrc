@@ -195,7 +195,7 @@ map <leader>bd :Bclose<cr>
 map <leader>bc :Bclose<cr>
 
 " Close all the buffers
-map <leader>ba :1,1000 bd!<cr>
+map <leader>ba :1,1000 bd<cr>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -215,7 +215,8 @@ map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers
 try
-    set switchbuf=useopen,usetab,newtab
+    set switchbuf=useopen
+    ",usetab,newtab
     set stal=2
 catch
 endtry
@@ -284,7 +285,7 @@ func! DeleteTrailingWS()
     exe "normal `z"
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.#coffee :call DeleteTrailingWS()
+autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -513,7 +514,8 @@ Plug 'Rykka/riv.vim'
 Plug 'Rykka/InstantRst'
 Plug 'Rykka/clickable.vim'
 Plug 'Raimondi/delimitMate'
-Plug 'tmhedberg/indent-motion'
+Plug 'jeetsukumaran/vim-indentwise'
+Plug 'nathanaelkane/vim-indent-guides'
 
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-easytags'
@@ -524,6 +526,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'nanotech/jellybeans.vim'
 Plug 'tpope/vim-vividchalk'
+Plug 'xolox/vim-notes'
 
 " scala
 Plug 'derekwyatt/vim-scala'
@@ -546,6 +549,8 @@ Plug 'marijnh/tern_for_vim'
 call plug#end()
 
 filetype plugin indent on     " required!
+
+let g:plug_threads=4
 
 """ Tagbar config and friends
 nmap <F8> :TagbarToggle<CR>
@@ -634,6 +639,11 @@ let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+
+let g:gitgutter_max_signs=1200
+
 " undotree toggle pod <f5>
 nnoremap <F5> :UndotreeToggle<cr>:wincmd j<CR>
 
@@ -647,11 +657,6 @@ omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 
-" show tabline only when there's at least one tab
-" 0 = never
-" 1 = at least one
-" 2 = always
-set showtabline=1
 
 " shows currently imputted command
 set showcmd
@@ -660,6 +665,12 @@ let g:airline_powerline_fonts = 1
 
 map <F3> :MBEbb<CR>
 map <F4> :MBEbf<CR> 
+
+" show tabline only when there's at least one tab
+" 0 = never
+" 1 = at least one
+" 2 = always
+set showtabline=1
 
 """""""""
 " notes "
@@ -673,4 +684,6 @@ map <F4> :MBEbf<CR>
 " and inside: `git submodule update --init --recursive`
 " and then `make install`
 " 
-" about YouCompleteMe it requires `./install.sh --clang-completer`
+" YouCompleteMe requires `install.sh --clang-completer` in plugin folder
+"
+" tern-for-vim requires `npm install` in plugin folder
