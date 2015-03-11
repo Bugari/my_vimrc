@@ -505,6 +505,7 @@ Plug 'marijnh/tern_for_vim'
 Plug 'wavded/vim-stylus'
 Plug 'scrooloose/syntastic'
 "Plug 'fholgado/minibufexpl.vim'
+Plug 'jeetsukumaran/vim-buffergator'
 Plug 'Valloric/MatchTagAlways'
 "Plug 'Shougo/neocomplcache.vim'
 Plug 'airblade/vim-gitgutter'
@@ -560,8 +561,9 @@ filetype plugin indent on     " required!
 
 """Ctrl-p
 
-nmap  :CtrlP<cr>
-let g:ctrlp_cmd = 'CtrlPBuffer'
+"nmap  :CtrlP<cr>
+"let g:ctrlp_cmd = 'CtrlPBuffer'
+let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_extensions = ['line', 'mixed']
 
 let g:ctrlp_clear_cache_on_exit = 0
@@ -570,7 +572,12 @@ let g:ctrlp_max_files = 0
 """ mini buf explorer
 "map <F3> :MBEbb<CR>
 "map <F4> :MBEbf<CR>
-"
+
+""" Buffergator
+
+let g:buffergator_viewport_split_policy = "B"
+let g:buffergator_hsplit_size = 10
+
 """ Vim plug
 let g:plug_threads=4
 
@@ -692,6 +699,13 @@ map  N <Plug>(easymotion-prev)
 
 " shows currently imputted command
 set showcmd
+
+""" airline
+" Enable the list of buffers
+"let g:airline#extensions#tabline#enabled = 1
+
+"let g:airline#extensions#tabline#buffer_nr_show = 1
+"let g:airline#extensions#tabline#buffer_nr_format = '%s: '
 
 let g:airline_powerline_fonts = 1
 
