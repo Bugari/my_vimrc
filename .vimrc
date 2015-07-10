@@ -9,6 +9,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" copy file path to register
+nmap cp :let @+ = expand("%")<cr>
+
 " Sets how many lines of history VIM has to remember
 set history=700
 
@@ -37,6 +40,11 @@ set undoreload=10000        " number of lines to save for undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" netrw settings
+let g:netrw_liststyle=3
+let g:netrw_winsize=-26
+" let g:netrw_banner=0
+
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=4
 
@@ -147,9 +155,12 @@ set expandtab
 set smarttab
 
 " 1 tab == i spaces
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
+"set shiftwidth=2
+"set tabstop=2
+"set softtabstop=2
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 
 " Linebreak on 500 characters
 set lbr
@@ -172,6 +183,79 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{ Bdelete script
+
+"here is a more exotic version of my original Kwbd script
+"delete the buffer; keep windows; create a scratch buffer if no buffers left
+function s:Kwbd(kwbdStage)
+  if(a:kwbdStage == 1)
+    if(!buflisted(winbufnr(0)))
+      bd!
+      return
+    endif
+    let s:kwbdBufNum = bufnr("%")
+    let s:kwbdWinNum = winnr()
+    windo call s:Kwbd(2)
+    execute s:kwbdWinNum . 'wincmd w'
+    let s:buflistedLeft = 0
+    let s:bufFinalJump = 0
+    let l:nBufs = bufnr("$")
+    let l:i = 1
+    while(l:i <= l:nBufs)
+      if(l:i != s:kwbdBufNum)
+        if(buflisted(l:i))
+          let s:buflistedLeft = s:buflistedLeft + 1
+        else
+          if(bufexists(l:i) && !strlen(bufname(l:i)) && !s:bufFinalJump)
+            let s:bufFinalJump = l:i
+          endif
+        endif
+      endif
+      let l:i = l:i + 1
+    endwhile
+    if(!s:buflistedLeft)
+      if(s:bufFinalJump)
+        windo if(buflisted(winbufnr(0))) | execute "b! " . s:bufFinalJump | endif
+      else
+        enew
+        let l:newBuf = bufnr("%")
+        windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif
+      endif
+      execute s:kwbdWinNum . 'wincmd w'
+    endif
+    if(buflisted(s:kwbdBufNum) || s:kwbdBufNum == bufnr("%"))
+      execute "bd! " . s:kwbdBufNum
+    endif
+    if(!s:buflistedLeft)
+      set buflisted
+      set bufhidden=delete
+      set buftype=
+      setlocal noswapfile
+    endif
+  else
+    if(bufnr("%") == s:kwbdBufNum)
+      let prevbufvar = bufnr("#")
+      if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != s:kwbdBufNum)
+        b #
+      else
+        bn
+      endif
+    endif
+  endif
+endfunction
+
+command! Kwbd call s:Kwbd(1)
+nnoremap <silent> <Plug>Kwbd :<C-u>Kwbd<CR>
+nnoremap <leader>bd :<C-u>Kwbd<cr>
+
+" Create a mapping (e.g. in your .vimrc) like this:
+"nmap <C-W>! <Plug>Kwbd
+
+
+
+
+" }}} Bdelete script
+
 
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
@@ -196,9 +280,6 @@ set relativenumber
 " next buffer / previous buffer
 map <leader>bn :bn<cr>
 map <leader>bp :bp<cr>
-" Close the current buffer
-map <leader>bd :Bclose<cr>
-map <leader>bc :Bclose<cr>
 
 " Close all the buffers
 map <leader>ba :1,1000 bd<cr>
@@ -212,6 +293,8 @@ map <leader>tl :tabnext<cr>
 map <leader>th :tabprevious<cr>
 
 
+map <leader>e :Lexplore<CR>
+map <F2> :Lexplore<CR>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -325,6 +408,7 @@ map <leader>p :cp<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
+set spelllang=pl
 
 " Shortcuts using <leader>
 map <leader>sn ]s
@@ -360,6 +444,11 @@ vnoremap <leader>p "_dP
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+inoremap <F2> <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
+inoremap <F3> <C-R>=strftime("%Y-%m-%d")<CR>
+inoremap <F4> <C-R>=strftime("%H:%M")<CR>
+
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
@@ -396,26 +485,6 @@ function! HasPaste()
     return ''
 endfunction
 
-" Don't close window, when deleting a buffer
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
-
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
-
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
-
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
-endfunction
 
 "nawigacja po splitach
 nmap <silent> <A-Up> :wincmd k<CR>
@@ -423,8 +492,8 @@ nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
 
-"zamykanie gdy zostanie tylko NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" zamykanie gdy zostanie tylko NERDTree
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 "podkreślanie podczas wyszukiwania
 :nnoremap <CR> :nohlsearch<cr>
@@ -440,8 +509,8 @@ set mps+=<:>
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 "edit w aktualnym folderze
-map <leader>e :edit %%
-map <leader>v :view %%
+" map <leader>e :edit %%
+" map <leader>v :view %%
 
 """ ZAMIANA LINII MIEJSCAMI BEGIN
 
@@ -496,8 +565,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
 " Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-"Plug 'tpope/vim-rails.git'
-Plug 'scrooloose/nerdtree'
+" Plug 'tpope/vim-rails.git'
+" Plug 'scrooloose/nerdtree'
 Plug 'kchmck/vim-coffee-script'
 Plug 'Valloric/YouCompleteMe'
 
@@ -524,6 +593,7 @@ Plug 'Rykka/clickable.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'jeetsukumaran/vim-indentwise'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'farseer90718/vim-taskwarrior'
 
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-easytags'
@@ -550,6 +620,9 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'vim-javascript'
 Plug 'ahayman/vim-nodejs-complete'
 Plug 'marijnh/tern_for_vim'
+Plug 'manicmaniac/betterga'
+
+Plug 'wincent/terminus'
 
 " non github repos
 " Plug 'git://git.wincent.com/command-t.git'
@@ -577,6 +650,7 @@ let g:ctrlp_max_files = 0
 
 let g:buffergator_viewport_split_policy = "B"
 let g:buffergator_hsplit_size = 10
+let g:buffergator_autoexpand_on_split = 0
 
 """ Vim plug
 let g:plug_threads=4
@@ -637,19 +711,19 @@ let g:mta_filetypes = {
 
     " NerdTree {
        "map <C-E> :NERDTreeToggle<CR>
-       map <F2> :NERDTreeToggle<CR>
-       "map <C-e> <plug>NERDTreeTabsToggle<CR>
-       map <leader>e :NERDTreeFind<CR>
-       nmap <leader>nt :NERDTreeFind<CR>
+       "map <F2> :NERDTreeToggle<CR>
+       ""map <C-e> <plug>NERDTreeTabsToggle<CR>
+       "map <leader>e :NERDTreeFind<CR>
+       "nmap <leader>nt :NERDTreeFind<CR>
 
-        let NERDTreeShowBookmarks=1
-        let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-        let NERDTreeChDirMode=0
-        let NERDTreeQuitOnOpen=1
-        let NERDTreeMouseMode=2
-        let NERDTreeShowHidden=1
-        let NERDTreeKeepTreeInNewTab=1
-        let g:nerdtree_tabs_open_on_gui_startup=0
+        "let NERDTreeShowBookmarks=1
+        "let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+        "let NERDTreeChDirMode=0
+        "let NERDTreeQuitOnOpen=1
+        "let NERDTreeMouseMode=2
+        "let NERDTreeShowHidden=1
+        "let NERDTreeKeepTreeInNewTab=1
+        "let g:nerdtree_tabs_open_on_gui_startup=0
     " }
 set listchars=eol:¬,tab:▸\ ,trail:⋅,extends:>,precedes:<
 set list
@@ -662,7 +736,7 @@ nmap <leader>l :set list!<CR>
 "highlight SpecialKey guifg=#4a4a59
 "
 " proper font
-set gfn=M+\ 1mn\ Medium\ 14
+set gfn=M+\ 1m\ Medium\ 12
 
 
 " set coffeescript lint file
@@ -672,13 +746,14 @@ let g:coffee_lint_options = '-f ~/.vim/coffeelint.json'
 "------------SYNTASTIC-----------
 let g:syntastic_enable_signs=1
 let g:syntastic_mode_map={ 'mode': 'active',
-                     \ 'active_filetypes': ['coffee'],
+                     \ 'active_filetypes': ['coffee', 'js', 'php'],
                      \ 'passive_filetypes': ['html', 'java'] }
 let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
 let g:syntastic_coffee_coffeelint_args = "--file ~/.vim/coffeelint.json"
 let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
+let g:syntastic_javascript_jslint_args = "-esnext"
 
 
 let g:gitgutter_max_signs=1200
@@ -708,6 +783,9 @@ set showcmd
 "let g:airline#extensions#tabline#buffer_nr_format = '%s: '
 
 let g:airline_powerline_fonts = 1
+
+" ycm YouCompleteMe
+let g:ycm_disable_for_files_larger_than_kb=50000
 
 
 " show tabline only when there's at least one tab
