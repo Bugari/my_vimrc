@@ -293,8 +293,6 @@ map <leader>tl :tabnext<cr>
 map <leader>th :tabprevious<cr>
 
 
-map <leader>e :Lexplore<CR>
-map <F2> :Lexplore<CR>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -493,7 +491,7 @@ nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
 
 " zamykanie gdy zostanie tylko NERDTree
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 "podkreślanie podczas wyszukiwania
 :nnoremap <CR> :nohlsearch<cr>
@@ -566,7 +564,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
 " Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Plug 'tpope/vim-rails.git'
-" Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 Plug 'kchmck/vim-coffee-script'
 Plug 'Valloric/YouCompleteMe'
 
@@ -623,6 +621,8 @@ Plug 'marijnh/tern_for_vim'
 Plug 'manicmaniac/betterga'
 
 Plug 'wincent/terminus'
+
+Plug 'tpope/vim-vinegar'
 
 " non github repos
 " Plug 'git://git.wincent.com/command-t.git'
@@ -709,22 +709,21 @@ let g:mta_filetypes = {
 	\ 'tmpl' : 1,
     \}
 
-    " NerdTree {
-       "map <C-E> :NERDTreeToggle<CR>
-       "map <F2> :NERDTreeToggle<CR>
-       ""map <C-e> <plug>NERDTreeTabsToggle<CR>
-       "map <leader>e :NERDTreeFind<CR>
-       "nmap <leader>nt :NERDTreeFind<CR>
+"     NerdTree {
+       map <C-E> :NERDTreeToggle<CR>
+       map <leader>e :NERDTreeFind<CR>
+       map <F2> :NERDTreeToggle<CR>
+       "map <C-e> <plug>NERDTreeTabsToggle<CR>
 
-        "let NERDTreeShowBookmarks=1
-        "let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-        "let NERDTreeChDirMode=0
-        "let NERDTreeQuitOnOpen=1
-        "let NERDTreeMouseMode=2
-        "let NERDTreeShowHidden=1
-        "let NERDTreeKeepTreeInNewTab=1
-        "let g:nerdtree_tabs_open_on_gui_startup=0
-    " }
+        let NERDTreeShowBookmarks=1
+        let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+        let NERDTreeChDirMode=0
+        let NERDTreeQuitOnOpen=1
+        let NERDTreeMouseMode=2
+        let NERDTreeShowHidden=1
+        let NERDTreeKeepTreeInNewTab=1
+        let g:nerdtree_tabs_open_on_gui_startup=0
+"     }
 set listchars=eol:¬,tab:▸\ ,trail:⋅,extends:>,precedes:<
 set list
 nmap <leader>l :set list!<CR>
