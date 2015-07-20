@@ -560,17 +560,12 @@ call plug#begin('~/.vim/plugged')
 " My Plugins here:
 "
 " original repos on github
+" USABILITY
 Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
+Plug 'scrooloose/nerdtree'
 " Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Plug 'tpope/vim-rails.git'
-Plug 'scrooloose/nerdtree'
-Plug 'kchmck/vim-coffee-script'
-Plug 'Valloric/YouCompleteMe'
-
-Plug 'marijnh/tern_for_vim'
-Plug 'wavded/vim-stylus'
-Plug 'scrooloose/syntastic'
 "Plug 'fholgado/minibufexpl.vim'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'Valloric/MatchTagAlways'
@@ -581,7 +576,9 @@ Plug 'kien/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
-Plug 'briancollins/vim-jst'
+Plug 'manicmaniac/betterga'
+Plug 'wincent/terminus'
+Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdcommenter'
 Plug 'bling/vim-airline'
@@ -592,12 +589,30 @@ Plug 'Raimondi/delimitMate'
 Plug 'jeetsukumaran/vim-indentwise'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'farseer90718/vim-taskwarrior'
+Plug 'xolox/vim-misc'
 
+" COMPLETION
+Plug 'Valloric/YouCompleteMe'
+Plug 'marijnh/tern_for_vim'
+Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-easytags'
-Plug 'xolox/vim-misc'
+Plug 'ahayman/vim-nodejs-complete'
+Plug 'marijnh/tern_for_vim'
+Plug 'ervandew/supertab'
+
+" LANGUAGE SUPPORT
+Plug 'kchmck/vim-coffee-script'
+Plug 'wavded/vim-stylus'
+Plug 'briancollins/vim-jst'
 Plug 'lukaszkorecki/CoffeeTags'
-" Color themes
+Plug 'derekwyatt/vim-scala'
+Plug 'gre/play2vim'
+Plug 'kchmck/vim-coffee-script'
+Plug 'vim-javascript'
+
+
+" COLOR THEMES
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 Plug 'nanotech/jellybeans.vim'
@@ -605,29 +620,15 @@ Plug 'tpope/vim-vividchalk'
 Plug 'xolox/vim-notes'
 Plug 'jonathanfilip/vim-lucius'
 
-" scala
-Plug 'derekwyatt/vim-scala'
-Plug 'gre/play2vim'
 "
+Plug 'manicmaniac/betterga'
+Plug 'wincent/terminus'
+Plug 'tpope/vim-vinegar'
 " vim-scripts repos
 Plug 'ConfirmQuit.vim'
 Plug 'L9'
 Plug 'FuzzyFinder'
 
-Plug 'kchmck/vim-coffee-script'
-Plug 'vim-javascript'
-Plug 'ahayman/vim-nodejs-complete'
-Plug 'marijnh/tern_for_vim'
-Plug 'manicmaniac/betterga'
-
-Plug 'wincent/terminus'
-
-Plug 'tpope/vim-vinegar'
-
-" non github repos
-" Plug 'git://git.wincent.com/command-t.git'
-"Plug 'git://repo.or.cz/vcscommand'
-" ...
 call plug#end()
 
 filetype plugin indent on     " required!
@@ -799,6 +800,24 @@ autocmd FocusLost * :set norelativenumber
 autocmd FocusGained * :set relativenumber
 autocmd InsertEnter * :set norelativenumber
 autocmd InsertLeave * :set relativenumber
+
+
+" temporary workarounds over omni completion
+
+autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+let g:SuperTabCrMapping = 0
+let g:SuperTabDefaultCompletionType = 'context'
+let g:SuperTabContextDefaultCompletionType = '<c-x><c-u>'
+autocmd FileType *
+    \ if &omnifunc != '' |
+    \     call SuperTabChain(&omnifunc, '<c-p>') |
+    \ endif
 
 """""""""
 " notes "
