@@ -114,11 +114,11 @@ syntax enable
 
 set background=dark
 "let g:solarized_termcolors=256
-colorscheme hybrid
 "colorscheme solarized
+"colorscheme hybrid
 "colorscheme vividchalk
 "colorscheme distinguished
-"colorscheme jellybeans
+colorscheme jellybeans
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -273,6 +273,12 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+"
+"nawigacja po splitach
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
 
 " relative row counting
 set relativenumber
@@ -484,11 +490,6 @@ function! HasPaste()
 endfunction
 
 
-"nawigacja po splitach
-nmap <silent> <A-Up> :wincmd k<CR>
-nmap <silent> <A-Down> :wincmd j<CR>
-nmap <silent> <A-Left> :wincmd h<CR>
-nmap <silent> <A-Right> :wincmd l<CR>
 
 " zamykanie gdy zostanie tylko NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -610,6 +611,8 @@ Plug 'derekwyatt/vim-scala'
 Plug 'gre/play2vim'
 Plug 'kchmck/vim-coffee-script'
 Plug 'vim-javascript'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'plasticboy/vim-markdown'
 
 
 " COLOR THEMES
@@ -736,7 +739,12 @@ nmap <leader>l :set list!<CR>
 "highlight SpecialKey guifg=#4a4a59
 "
 " proper font
-set gfn=M+\ 1m\ Medium\ 12
+"set gfn=M+\ 1m\ Medium\ 12
+"set gfn=Anonymous\ Pro\ for\ Powerline\ 12
+"set gfn=Inconsolata-dz\ for\ Powerline\ 12
+"set gfn=Ttyp0\ 13
+"set gfn=Fira\ Mono\ for\ Powerline\ 12
+set gfn=monofur\ for\ Powerline\ 14
 
 
 " set coffeescript lint file
