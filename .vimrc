@@ -610,7 +610,7 @@ Plug 'lukaszkorecki/CoffeeTags'
 Plug 'derekwyatt/vim-scala'
 Plug 'gre/play2vim'
 Plug 'kchmck/vim-coffee-script'
-Plug 'vim-javascript'
+Plug 'pangloss/vim-javascript'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'plasticboy/vim-markdown'
 
