@@ -613,7 +613,7 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'plasticboy/vim-markdown'
-
+Plug 'jaxbot/syntastic-react'
 
 " COLOR THEMES
 Plug 'w0ng/vim-hybrid'
@@ -762,6 +762,9 @@ let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_javascript_jslint_args = "-esnext"
+
+let g:syntastic_javascript_checkers = ['jsxhint', 'eslint']
+let g:syntastic_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
 
 
 let g:gitgutter_max_signs=1200
