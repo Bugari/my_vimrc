@@ -12,6 +12,9 @@
 " copy file path to register
 nmap cp :let @+ = expand("%")<cr>
 
+" fixdel, so backspace works as it should -.-
+:fixdel
+
 " Sets how many lines of history VIM has to remember
 set history=700
 
@@ -586,11 +589,12 @@ Plug 'bling/vim-airline'
 Plug 'Rykka/riv.vim'
 Plug 'Rykka/InstantRst'
 Plug 'Rykka/clickable.vim'
-Plug 'Raimondi/delimitMate'
+" Plug 'Raimondi/delimitMate'
 Plug 'jeetsukumaran/vim-indentwise'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'farseer90718/vim-taskwarrior'
 Plug 'xolox/vim-misc'
+Plug 'dhruvasagar/vim-table-mode'
 
 " COMPLETION
 Plug 'Valloric/YouCompleteMe'
@@ -614,7 +618,6 @@ Plug 'pangloss/vim-javascript'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'plasticboy/vim-markdown'
 
-
 " COLOR THEMES
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
@@ -623,7 +626,6 @@ Plug 'tpope/vim-vividchalk'
 Plug 'xolox/vim-notes'
 Plug 'jonathanfilip/vim-lucius'
 
-"
 Plug 'manicmaniac/betterga'
 Plug 'wincent/terminus'
 Plug 'tpope/vim-vinegar'
@@ -660,7 +662,9 @@ let g:buffergator_autoexpand_on_split = 0
 let g:plug_threads=4
 
 """ Vim notes
-let g:notes_suffix = '.note' 
+let g:notes_suffix = '.note'
+let g:notes_smart_quotes = 0
+let g:notes_list_bullets = ['*','+','-']
 
 """ Indent guides 
 let g:indent_guides_guide_size = 1
