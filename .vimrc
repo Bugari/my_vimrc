@@ -9,6 +9,15 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" proper font
+"set gfn=M+\ 1m\ Medium\ 12
+"set gfn=Anonymous\ Pro\ for\ Powerline\ 12
+"set gfn=Inconsolata-dz\ for\ Powerline\ 12
+"set gfn=Ttyp0\ 13
+"set gfn=Fira\ Mono\ for\ Powerline\ 12
+set gfn=monofur\ for\ Powerline\ 14
+
 " copy file path to register
 nmap cp :let @+ = expand("%")<cr>
 
@@ -456,6 +465,11 @@ inoremap <F2> <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
 inoremap <F3> <C-R>=strftime("%Y-%m-%d")<CR>
 inoremap <F4> <C-R>=strftime("%H:%M")<CR>
 
+" not all terminals handle <Fx> keys
+nnoremap <leader>it <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
+nnoremap <leader>id <C-R>=strftime("%Y-%m-%d")<CR>
+nnoremap <leader>iT <C-R>=strftime("%H:%M")<CR>
+
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
@@ -565,15 +579,12 @@ call plug#begin('~/.vim/plugged')
 "
 " original repos on github
 " USABILITY
+Plug 'manicmaniac/betterga'
 Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'scrooloose/nerdtree'
-" Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Plug 'tpope/vim-rails.git'
-"Plug 'fholgado/minibufexpl.vim'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'Valloric/MatchTagAlways'
-"Plug 'Shougo/neocomplcache.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-surround'
 Plug 'kien/ctrlp.vim'
@@ -582,20 +593,21 @@ Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
 Plug 'manicmaniac/betterga'
 Plug 'wincent/terminus'
-Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdcommenter'
 Plug 'bling/vim-airline'
 Plug 'Rykka/riv.vim'
 Plug 'Rykka/InstantRst'
 Plug 'Rykka/clickable.vim'
-" Plug 'Raimondi/delimitMate'
 Plug 'jeetsukumaran/vim-indentwise'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'farseer90718/vim-taskwarrior'
 Plug 'xolox/vim-misc'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'wesQ3/vim-windowswap'
+"Plug 'Shougo/neocomplcache.vim'
+"Plug 'fholgado/minibufexpl.vim'
+"Plug 'Raimondi/delimitMate'
 
 " COMPLETION
 Plug 'Valloric/YouCompleteMe'
@@ -603,8 +615,7 @@ Plug 'marijnh/tern_for_vim'
 Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-easytags'
-Plug 'ahayman/vim-nodejs-complete'
-Plug 'marijnh/tern_for_vim'
+" Plug 'ahayman/vim-nodejs-complete' " seems abandonded?
 Plug 'ervandew/supertab'
 
 " LANGUAGE SUPPORT
@@ -628,11 +639,10 @@ Plug 'tpope/vim-vividchalk'
 Plug 'xolox/vim-notes'
 Plug 'jonathanfilip/vim-lucius'
 
-Plug 'manicmaniac/betterga'
-Plug 'wincent/terminus'
-Plug 'tpope/vim-vinegar'
+Plug 'wincent/terminus' "small terminal enchancements, like shape of cursor in replace/insert modes
+"Plug 'tpope/vim-vinegar' "used with netrw - not used
 " vim-scripts repos
-Plug 'ConfirmQuit.vim'
+"Plug 'ConfirmQuit.vim' "makes mess with 'x' button
 Plug 'L9'
 Plug 'FuzzyFinder'
 
@@ -672,8 +682,7 @@ let g:notes_list_bullets = ['*','+','-']
 let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
-let g:indent_guides_exclude_filetypes = ['help', 'note'] 
-" 'nerdtree' is a good option
+let g:indent_guides_exclude_filetypes = ['help', 'note', 'nerdtree'] 
 
 let g:indent_guides_color_change_percent = 6
 
@@ -744,13 +753,6 @@ nmap <leader>l :set list!<CR>
 "highlight NonText guifg=#4a4a59
 "highlight SpecialKey guifg=#4a4a59
 "
-" proper font
-"set gfn=M+\ 1m\ Medium\ 12
-"set gfn=Anonymous\ Pro\ for\ Powerline\ 12
-"set gfn=Inconsolata-dz\ for\ Powerline\ 12
-"set gfn=Ttyp0\ 13
-"set gfn=Fira\ Mono\ for\ Powerline\ 12
-set gfn=monofur\ for\ Powerline\ 14
 
 
 " set coffeescript lint file
@@ -813,21 +815,21 @@ set showtabline=1
 
 
 " Experimental
-autocmd FocusLost * :set norelativenumber
-autocmd FocusGained * :set relativenumber
-autocmd InsertEnter * :set norelativenumber
-autocmd InsertLeave * :set relativenumber
+"autocmd FocusLost * :set norelativenumber
+"autocmd FocusGained * :set relativenumber
+"autocmd InsertEnter * :set norelativenumber
+"autocmd InsertLeave * :set relativenumber
 
 
 " temporary workarounds over omni completion
+"autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
+"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
-autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 let g:SuperTabCrMapping = 0
 let g:SuperTabDefaultCompletionType = 'context'
 let g:SuperTabContextDefaultCompletionType = '<c-x><c-u>'
@@ -848,7 +850,7 @@ autocmd FileType *
 " and inside: `git submodule update --init --recursive`
 " and then `make install`
 "
-" YouCompleteMe requires `install.sh --clang-completer` in plugin folder
+" YouCompleteMe requires `./install.py --clang-completer --tern-completer` in plugin folder
 "
 " tern-for-vim requires `npm install` in plugin folder
 
