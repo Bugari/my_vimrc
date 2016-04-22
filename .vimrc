@@ -595,6 +595,7 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'farseer90718/vim-taskwarrior'
 Plug 'xolox/vim-misc'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'wesQ3/vim-windowswap'
 
 " COMPLETION
 Plug 'Valloric/YouCompleteMe'
