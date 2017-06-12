@@ -118,7 +118,7 @@ set tm=500
 " => Colors and Fonts
 
 " Enable syntax highlighting
-syntax enable
+" syntax enable
 
 "let g:lucius_contrast='medium'
 "let g:lucius_contrast_bg='high'
@@ -572,7 +572,7 @@ set nu
 set mouse=a "bo myszka być musi!
 set mousemodel=extend
 
-set omnifunc=syntaxcomplete#Complete
+"set omnifunc=syntaxcomplete#Complete
 
 call plug#begin('~/.vim/plugged')
 " My Plugins here:
@@ -605,13 +605,17 @@ Plug 'farseer90718/vim-taskwarrior'
 Plug 'xolox/vim-misc'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'wesQ3/vim-windowswap'
-"Plug 'Shougo/neocomplcache.vim'
 "Plug 'fholgado/minibufexpl.vim'
 "Plug 'Raimondi/delimitMate'
 
 " COMPLETION
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
+
+Plug 'w0rp/ale'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'Shougo/neocomplete.vim'
 Plug 'marijnh/tern_for_vim'
+Plug 'Slava/tern-meteor'
 Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-easytags'
@@ -619,17 +623,17 @@ Plug 'xolox/vim-easytags'
 Plug 'ervandew/supertab'
 
 " LANGUAGE SUPPORT
-Plug 'kchmck/vim-coffee-script'
+" Plug 'kchmck/vim-coffee-script'
+Plug 'posva/vim-vue'
 Plug 'wavded/vim-stylus'
 Plug 'briancollins/vim-jst'
-Plug 'lukaszkorecki/CoffeeTags'
-Plug 'derekwyatt/vim-scala'
-Plug 'gre/play2vim'
-Plug 'kchmck/vim-coffee-script'
+" Plug 'lukaszkorecki/CoffeeTags'
+" Plug 'derekwyatt/vim-scala'
+" Plug 'gre/play2vim'
 Plug 'pangloss/vim-javascript'
-Plug 'mustache/vim-mustache-handlebars'
+" Plug 'mustache/vim-mustache-handlebars'
 Plug 'plasticboy/vim-markdown'
-Plug 'jaxbot/syntastic-react'
+" Plug 'jaxbot/syntastic-react'
 
 " COLOR THEMES
 Plug 'w0ng/vim-hybrid'
@@ -642,13 +646,31 @@ Plug 'jonathanfilip/vim-lucius'
 Plug 'wincent/terminus' "small terminal enchancements, like shape of cursor in replace/insert modes
 "Plug 'tpope/vim-vinegar' "used with netrw - not used
 " vim-scripts repos
-"Plug 'ConfirmQuit.vim' "makes mess with 'x' button
-Plug 'L9'
-Plug 'FuzzyFinder'
+" Plug 'ConfirmQuit.vim' "makes mess with 'x' button
+" Plug 'L9'
+" Plug 'FuzzyFinder'
 
 call plug#end()
 
 filetype plugin indent on     " required!
+
+""" pangloss/vim-javascript
+
+let g:javascript_plugin_flow = 1
+
+
+""" neo complete
+
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#auto_completion_start_length = 1
+let g:neocomplete#sources#buffer#cache_limit_size = 50000
+let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 2
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.javascript = '\h\w*\|[^. \t]\.\w*'
 
 """Ctrl-p
 
