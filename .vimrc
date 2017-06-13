@@ -16,7 +16,9 @@
 "set gfn=Inconsolata-dz\ for\ Powerline\ 12
 "set gfn=Ttyp0\ 13
 "set gfn=Fira\ Mono\ for\ Powerline\ 12
-set gfn=monofur\ for\ Powerline\ 14
+"set gfn=monofur\ for\ Powerline\ 14
+set gfn=SpaceMono\ Nerd\ Font\ 12
+" set gfn=MonofurForPowerline\ Nerd\ Font\ 14
 
 " copy file path to register
 nmap cp :let @+ = expand("%")<cr>
@@ -170,9 +172,9 @@ set smarttab
 "set shiftwidth=2
 "set tabstop=2
 "set softtabstop=2
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
 
 " Linebreak on 500 characters
 set lbr
@@ -582,7 +584,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'manicmaniac/betterga'
 Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'scrooloose/nerdtree'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'Valloric/MatchTagAlways'
 Plug 'airblade/vim-gitgutter'
@@ -594,6 +595,7 @@ Plug 'mbbill/undotree'
 Plug 'manicmaniac/betterga'
 Plug 'wincent/terminus'
 Plug 'tpope/vim-unimpaired'
+Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'bling/vim-airline'
 Plug 'Rykka/riv.vim'
@@ -607,16 +609,17 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'wesQ3/vim-windowswap'
 "Plug 'fholgado/minibufexpl.vim'
 "Plug 'Raimondi/delimitMate'
+Plug 'ryanoasis/vim-devicons' " must load after nerd, and airline
 
 " COMPLETION
 " Plug 'Valloric/YouCompleteMe'
 
 Plug 'w0rp/ale'
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
 Plug 'Shougo/neocomplete.vim'
 Plug 'marijnh/tern_for_vim'
 Plug 'Slava/tern-meteor'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-easytags'
 " Plug 'ahayman/vim-nodejs-complete' " seems abandonded?
@@ -685,6 +688,11 @@ let g:ctrlp_max_files = 0
 """ mini buf explorer
 "map <F3> :MBEbb<CR>
 "map <F4> :MBEbf<CR>
+
+""" ale
+
+let g:ale_fixers = {}
+let g:ale_fixers.javascript = ['eslint']
 
 """ Buffergator
 
@@ -875,4 +883,5 @@ autocmd FileType *
 " YouCompleteMe requires `./install.py --clang-completer --tern-completer` in plugin folder
 "
 " tern-for-vim requires `npm install` in plugin folder
+" fonts from https://github.com/ryanoasis/nerd-fonts
 
