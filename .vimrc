@@ -17,8 +17,8 @@
 "set gfn=Ttyp0\ 13
 "set gfn=Fira\ Mono\ for\ Powerline\ 12
 "set gfn=monofur\ for\ Powerline\ 14
-set gfn=SpaceMono\ Nerd\ Font\ 12
 " set gfn=MonofurForPowerline\ Nerd\ Font\ 14
+set gfn=SpaceMono\ Nerd\ Font\ 12
 
 " copy file path to register
 nmap cp :let @+ = expand("%")<cr>
@@ -614,12 +614,12 @@ Plug 'ryanoasis/vim-devicons' " must load after nerd, and airline
 " COMPLETION
 " Plug 'Valloric/YouCompleteMe'
 
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 " Plug 'ludovicchabant/vim-gutentags'
 Plug 'Shougo/neocomplete.vim'
 Plug 'marijnh/tern_for_vim'
 Plug 'Slava/tern-meteor'
-" Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-easytags'
 " Plug 'ahayman/vim-nodejs-complete' " seems abandonded?
@@ -691,8 +691,13 @@ let g:ctrlp_max_files = 0
 
 """ ale
 
-let g:ale_fixers = {}
-let g:ale_fixers.javascript = ['eslint']
+" let g:ale_fixers = {}
+" let g:ale_fixers.javascript = ['eslint']
+
+" " only eslint
+" let g:ale_linters = {
+" \   'javascript': ['eslint'],
+" \}
 
 """ Buffergator
 
